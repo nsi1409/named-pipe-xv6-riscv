@@ -10,7 +10,7 @@ main(int argc, char *argv[])
 {
 	printf("here\n");
 	for(int i=1; i<argc; i++) {
-		int fd = open(argv[1], 0);
+		int fd = open(argv[i], 0);
 		printf("%d\n", fd);
 		read(fd, buf, sizeof(buf));
 	}
