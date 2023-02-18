@@ -9,8 +9,10 @@ int
 main(int argc, char *argv[])
 {
 	printf("here\n");
-	int fd = open(argv[1], 0);
-	printf("%d\n", fd);
-	read(fd, buf, sizeof(buf));
+	for(int i=1; i<argc; i++) {
+		int fd = open(argv[1], 0);
+		printf("%d\n", fd);
+		read(fd, buf, sizeof(buf));
+	}
 	return 0;
 }
