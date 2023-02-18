@@ -67,6 +67,8 @@ ls(char *path)
       printf("%s %d %d %d\n", fmtname(buf), st.type, st.ino, st.size);
     }
     break;
+  case T_PIPE:
+    printf("Do not use ls on named pipe\n");
   }
   close(fd);
 }

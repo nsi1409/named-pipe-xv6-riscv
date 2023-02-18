@@ -111,6 +111,9 @@ fileread(struct file *f, uint64 addr, int n)
   if(f->readable == 0)
     return -1;
 
+  if(f->type == T_PIPE) {
+    panic("type is pipe");
+  }
   if(f->type == FD_PIPE){
     r = piperead(f->pipe, addr, n);
   } else if(f->type == FD_DEVICE){
@@ -139,6 +142,9 @@ filewrite(struct file *f, uint64 addr, int n)
   if(f->writable == 0)
     return -1;
 
+  if(f->type == T_PIPE) {
+    printf("type is pipe");
+  }
   if(f->type == FD_PIPE){
     ret = pipewrite(f->pipe, addr, n);
   } else if(f->type == FD_DEVICE){
