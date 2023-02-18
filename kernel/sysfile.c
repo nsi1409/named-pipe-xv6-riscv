@@ -420,6 +420,11 @@ sys_mkfifo(void)
 		fileclose(wf);
 		return -1;
 	}
+	int rf_success;
+	int wf_success;
+	writei(ip, 0, rf, 0, rf_success);
+	writei(ip, 0, wf, sizeof(rf), wf_success);
+
 	iunlockput(ip);
 	end_op();
 	return 0;
