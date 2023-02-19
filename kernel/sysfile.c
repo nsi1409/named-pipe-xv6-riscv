@@ -420,8 +420,8 @@ sys_mkfifo(void)
 		fileclose(wf);
 		return -1;
 	}
-	writei(ip, 0, (uint64)rf, 0, sizeof(uint64));
-	writei(ip, 0, (uint64)wf, sizeof(uint64), sizeof(uint64));
+	writei(ip, 0, (uint64)rf, 0, sizeof(rf));
+	writei(ip, 0, (uint64)wf, sizeof(struct file *), sizeof(wf));
 
 	iunlockput(ip);
 	end_op();

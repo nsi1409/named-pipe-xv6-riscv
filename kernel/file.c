@@ -149,10 +149,11 @@ filewrite(struct file *f, uint64 addr, int n)
     //writei(f->ip, 0, addr, sizeof(uint64), n);
     begin_op();
     ilock(f->ip);
-    uint64 w_fd = 0;
-    readi(f->ip, 0, w_fd, sizeof(uint64), sizeof(uint64));
-    panic("fileread");
+    uint64 w_fd;
+    memset(&w_fd, 0, sizeof(uint64));
+    readi(f->ip, 0, (uint64)&w_fd, sizeof(struct file *), sizeof(struct file *));
     ret = pipewrite(((struct file *)w_fd)->pipe, addr, n);
+    panic("fileread");
     //ret = writei(f->ip+sizeof(uint64), 1, addr, f->off, n);
     //f->off = f->off + ret;
     iunlock(f->ip);
