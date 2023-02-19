@@ -112,7 +112,11 @@ fileread(struct file *f, uint64 addr, int n)
     return -1;
 
   if(f->ip->type == T_PIPE) {
-    panic("type is pipe");
+    //uint read_addr;
+	//readi(f->ip, 0, read_addr, 0, sizeof(uint));
+    //r = piperead((struct pipe *)read_addr, addr, n);
+    //panic("type is pipe %d", outp);
+    //panic(flag);
   } else if(f->type == FD_PIPE){
     r = piperead(f->pipe, addr, n);
   } else if(f->type == FD_DEVICE){
@@ -141,10 +145,19 @@ filewrite(struct file *f, uint64 addr, int n)
   if(f->writable == 0)
     return -1;
 
-  if(f->type == T_PIPE) {
-    printf("type is pipe");
-  }
-  if(f->type == FD_PIPE){
+  if(f->ip->type == T_PIPE) {
+    //writei(f->ip, 0, addr, sizeof(uint64), n);
+    begin_op();
+    ilock(f->ip);
+    uint64 w_fd = 0;
+    readi(f->ip, 0, w_fd, sizeof(uint64), sizeof(uint64));
+    panic("fileread");
+    ret = pipewrite(((struct file *)w_fd)->pipe, addr, n);
+    //ret = writei(f->ip+sizeof(uint64), 1, addr, f->off, n);
+    //f->off = f->off + ret;
+    iunlock(f->ip);
+    end_op();
+  } else if(f->type == FD_PIPE){
     ret = pipewrite(f->pipe, addr, n);
   } else if(f->type == FD_DEVICE){
     if(f->major < 0 || f->major >= NDEV || !devsw[f->major].write)
