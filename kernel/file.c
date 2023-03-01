@@ -112,11 +112,8 @@ fileread(struct file *f, uint64 addr, int n)
     return -1;
 
   if(f->ip->type == T_PIPE) {
-    //uint read_addr;
-	//readi(f->ip, 0, read_addr, 0, sizeof(uint));
-    //r = piperead((struct pipe *)read_addr, addr, n);
-    //panic("type is pipe %d", outp);
-    //panic(flag);
+    r = piperead(f->ip->wf->pipe, addr, n);
+    //panic("read");
   } else if(f->type == FD_PIPE){
     r = piperead(f->pipe, addr, n);
   } else if(f->type == FD_DEVICE){
@@ -146,18 +143,10 @@ filewrite(struct file *f, uint64 addr, int n)
     return -1;
 
   if(f->ip->type == T_PIPE) {
-    //writei(f->ip, 0, addr, sizeof(uint64), n);
-    begin_op();
-    ilock(f->ip);
-    uint64 w_fd;
-    memset(&w_fd, 0, sizeof(uint64));
-    readi(f->ip, 0, (uint64)&w_fd, sizeof(struct file *), sizeof(struct file *));
-    ret = pipewrite(((struct file *)w_fd)->pipe, addr, n);
-    panic("fileread");
-    //ret = writei(f->ip+sizeof(uint64), 1, addr, f->off, n);
-    //f->off = f->off + ret;
-    iunlock(f->ip);
-    end_op();
+    ret = pipewrite(f->ip->wf->pipe, addr, n);
+    f->ip->rf->pipe->writeopen = 0;
+    f->ip->rf->pipe->readopen = 1;
+    //panic("write");
   } else if(f->type == FD_PIPE){
     ret = pipewrite(f->pipe, addr, n);
   } else if(f->type == FD_DEVICE){
