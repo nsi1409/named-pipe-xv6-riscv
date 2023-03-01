@@ -113,6 +113,8 @@ fileread(struct file *f, uint64 addr, int n)
 
   if(f->ip->type == T_PIPE) {
     r = piperead(f->ip->wf->pipe, addr, n);
+    //f->ip->rf->pipe->writeopen = 1;
+    //f->ip->rf->pipe->readopen = 0;
     //panic("read");
   } else if(f->type == FD_PIPE){
     r = piperead(f->pipe, addr, n);

@@ -414,7 +414,7 @@ sys_mkfifo(void)
 		return -1;
 	}
 	ip->rf->pipe->writeopen = 1;
-	ip->rf->pipe->readopen = 0;
+	ip->rf->pipe->readopen = 1;
 	ip->rf->ip = ip;
 	ip->wf->ip = ip;
 	iunlockput(ip);
